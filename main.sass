@@ -1,0 +1,126 @@
+@import url('https://fonts.googleapis.com/css?family=Istok+Web:400,700&display=swap&subset=latin-ext')
+@import "partials/_variables.sass"
+@import "partials/_global.sass"
+@import "partials/_mixin.sass"                        
+@import "partials/_header.sass"                                               
+@import "partials/_products-section.sass"
+@import "partials/_footer.sass"                                   
+
+
+
+main
+    .carousel
+        min-height: 180px
+        .carousel-inner
+            height: 100%
+            .carousel-item, .carousel-item.active
+                height: 100%
+                img
+                    height: 100%
+    .carousel-title
+        position: absolute
+        left: 50%
+        top: 50%
+        transform: translate(-50%,-50%)
+        h1
+            color: orange
+            text-align: center
+        h6
+            color: #fff
+            text-align: center
+            width: max-content
+            font-weight: 300
+
+    .carousel-control-prev-icon
+        background: url("./img/arrow-left.png")
+        width: 30px
+        height: 30px
+        background-position: center
+        background-size: 100%
+        background-repeat: no-repeat
+    .carousel-control-next-icon
+        background: url("./img/arrow-right.png")
+        width: 30px
+        height: 30px
+        background-position: center
+        background-size: 100%
+        background-repeat: no-repeat
+    .carousel-indicators
+        bottom: 0
+        li
+            width: 10px
+            height: 10px
+            border: 2px solid #fff
+            border-radius: 50%
+            background-color: transparent
+    .left-top-corner, .right-bottom-corner
+        position: absolute
+        width: 25%
+        height: 35%
+    .left-top-corner
+        top: 5px
+        left: 5px
+        border-top: 2px solid #fff
+        border-left: 2px solid #fff
+        transition: all 0.2s
+    .right-bottom-corner
+        right: 5px
+        bottom: 5px
+        border-right: 2px solid #fff
+        border-bottom: 2px solid #fff
+        transition: all 0.2s
+    .main-container-title
+        text-align: center
+        text-transform: uppercase
+        padding: 50px 0 20px 0
+    .dots-holder
+        background: url("./img/decoration-line.png")
+        width: 130px
+        height: 15px
+        background-position: center
+        background-size: 100%
+        background-repeat: no-repeat
+    .text-holder p
+        color: #999
+    .collection-holders
+        position: relative
+        a
+            display: block
+            &:hover
+                .left-top-corner
+                    top: 15px
+                    left: 15px
+                .right-bottom-corner
+                    right: 15px
+                    bottom: 15px
+            img
+                width: 100%
+                height: 100%
+    .collection-title
+        position: absolute
+        text-align: center
+        left: 50%
+        top: 50%
+        transform: translate(-50%, -50%)
+        color: #fff
+        width: max-content
+        cursor: pointer
+         
+
+@media screen and (min-width: 576px)
+
+    main
+        .carousel-title
+            width: 60%
+            padding: 20px 0
+            background: rgba(0,0,0,0.5)
+            
+            h6
+                width: auto
+
+@media screen and (min-width: 768px) 
+    main
+        .left-top-corner, .right-bottom-corner
+            width: 15%
+    .carousel-title h1
+        font-size: 5rem

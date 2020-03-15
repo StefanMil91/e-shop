@@ -1,0 +1,66 @@
+.products-menu 
+    margin-top: 20px
+    li
+        a
+            text-transform: uppercase
+            padding: 10px 0
+            &:hover
+                padding-top: 8px
+                border-top: 2px solid #acdacf
+
+.product-holder
+    padding: 0 15px
+    z-index: 99999999
+.product-img
+    opacity: 1
+    transition: opacity 0.3s
+.product-img-holder
+    position: relative
+    overflow: hidden
+.bottom-holder
+    position: absolute
+    width: 100%
+    bottom: 0
+    padding: 0 15px
+    height: 60px
+    display: flex
+    justify-content: space-around
+    align-items: center
+    background-color: rgba(133, 195, 220, 0.95)
+.pr-title
+    p, h6
+        margin: 0
+.product-title
+    z-index: 999
+    background-color: $bkg-color
+    h6
+        margin: 0
+        display: flex
+        align-items: center
+
+.color-picker
+    .color-box
+        width: 16px
+        height: 16px
+        display: inline-block
+    .purple
+        background-color: #7C81EA
+    .green
+        background-color: #5eb09b
+    .dark-gray
+        background-color: #333333
+
+@media screen and (min-width: 400px)
+    .product-holder
+        width: 50%
+
+@media screen and (min-width: 992px)
+    .bottom-holder
+        bottom: -60px
+        transition: all 0.3s
+    .product-holder
+        &:hover
+            .bottom-holder
+                bottom: 0 
+            .product-img
+                opacity: 0.6
