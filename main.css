@@ -332,6 +332,10 @@ header form .input-group-text {
   padding-bottom: 5px;
 }
 
+.color-picker {
+  margin-left: 12px;
+}
+
 .jump-to-top {
   display: none;
   width: 32px;
