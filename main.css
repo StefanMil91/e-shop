@@ -212,6 +212,11 @@ header form .input-group-text {
   border-top: 2px solid #acdacf;
 }
 
+.products-menu li .active-product-link {
+  padding-top: 8px;
+  border-top: 2px solid #acdacf;
+}
+
 .product-holder {
   padding: 0 15px;
   z-index: 99999999;
@@ -349,6 +354,36 @@ header form .input-group-text {
   right: 20px;
   bottom: 120px;
   background-color: #fff;
+}
+
+.back-link {
+  padding: 15px 0;
+}
+
+.back-link a {
+  margin-left: 10px;
+}
+
+.bck-img {
+  -webkit-filter: invert(39%) sepia(4%) saturate(16%) hue-rotate(7deg) brightness(100%) contrast(94%);
+          filter: invert(39%) sepia(4%) saturate(16%) hue-rotate(7deg) brightness(100%) contrast(94%);
+  width: 12px;
+  height: 20px;
+}
+
+.des-data .form-control {
+  padding: 0;
+  width: 33px;
+}
+
+.description-holder {
+  padding-top: 20px;
+}
+
+@media screen and (min-width: 768px) {
+  .btn-block {
+    width: 50% !important;
+  }
 }
 
 main .carousel {
