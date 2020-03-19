@@ -38,7 +38,7 @@ export default function template() {
     return html;
 }
 
-export default function template1() {
+export function template1() {
     let html = `
     <!DOCTYPE html>
     <html lang="en">
