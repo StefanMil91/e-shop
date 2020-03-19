@@ -1,5 +1,14 @@
-import template from "./templates.js";
-import clearMainView from "./productView.js";
+import {
+    template,
+    template1,
+    template2
+} from "./templates.js";
+import {
+    clearMainView,
+    replaceProductData,
+    replaceSeparatelyData,
+    showMainView
+} from "./productView.js";
 
 const DOM = {
     topJumper: document.querySelector('.jump-to-top'),
@@ -13,7 +22,8 @@ const DOM = {
 }
 
 const state = {
-    data: undefined
+    data: undefined,
+    previousColection: "default"
 }
 
 
@@ -26,9 +36,14 @@ window.addEventListener('scroll', () => {
 });
 
 async function getData() {
+    // Get data and add to state
     state.data = await fetch('shop.json')
         .then(res => res.json())
         .then(data => data);
+    // Put unique id in json data
+    state.data.forEach((curr, index) => {
+        curr.id = index;
+    })
     //console.log(state.data);
     let tmp = template();
     replaceData(state.data, tmp);
@@ -39,26 +54,29 @@ function replaceData(data, temp) {
     clearView(DOM.productHolder);
     const titleRegEx = new RegExp(/{{productTitle}}/g);
     const colectionRegEx = new RegExp(/{{colection}}/g);
+    const idRegEx = new RegExp(/{{id}}/g);
+
     let html = '';
-    data.forEach(curr => {
+    data.forEach((curr) => {
         html = temp.replace("{{imgSrc}}", curr.imgSrc)
             .replace(titleRegEx, curr.productTitle)
             .replace("{{model}}", curr.model)
             .replace("{{price}}", curr.price)
-            .replace(colectionRegEx, curr.colection);
+            .replace(colectionRegEx, curr.colection)
+            .replace(idRegEx, curr.id);
         DOM.productHolder.innerHTML += html;
     });
-    // Add events listener for products view
-    DOM.productView = document.querySelectorAll('.product-view')
+    // Add events listener for all product view
+    DOM.productView = document.querySelectorAll('.product-view');
     DOM.productView.forEach(curr => {
-        curr.addEventListener('click', prepareView);
-    })
+        curr.addEventListener('click', createProductView);
+    });
 }
 
 function makeCollection(e) {
     e.preventDefault();
     let pickedCol = this.getAttribute('data-colection');
-    //console.log();
+    state.previousColection = pickedCol;
 
     DOM.dataColections.forEach((curr) => {
         curr.classList.remove('active-product-link');
@@ -85,14 +103,60 @@ function clearView(parent) {
 }
 // Make product view 
 
-function prepareView(e) {
-    e.preventDefault();
-    clearMainView([DOM.introSection, DOM.carousel, DOM.maleFemaleSection, DOM.pickerColection]);
-    clearView(DOM.productHolder);
-    console.log(this);
+function randomizeArr(arr) {
+    let tempArr = [].concat(arr);
+
+    for (let i = tempArr.length - 1; i > 0; i--) {
+        let rndmNum = Math.floor(Math.random() * (i + 1));
+        let tempVal = tempArr[i];
+        tempArr[i] = tempArr[rndmNum];
+        tempArr[rndmNum] = tempVal;
+    }
+    return tempArr;
 
 }
 
+function createProductView(e) {
+    e.preventDefault();
+
+    let templ2 = template2();
+    let templ1 = template1();
+    // Clear view
+    clearMainView([DOM.introSection, DOM.carousel, DOM.maleFemaleSection, DOM.pickerColection]); // clear other unnecessery elements
+    clearView(DOM.productHolder); // clear container with products
+
+    let colForSeparately = this.getAttribute('data-colection');
+    let currId = parseInt(this.getAttribute('data-id'));
+    let currProduct = state.data[currId];
+
+    // Filtrate data for separately section
+    function separatelyFilter(curr) {
+        return curr.colection === colForSeparately;
+    }
+    // Slice curr product
+    let tempStateData = [].concat(state.data);
+    tempStateData.splice(currId, 1);
+
+    // Filter picked colection and randomized arr
+    let sepColArr = tempStateData.filter(separatelyFilter);
+    let randomArrForSepSection = randomizeArr(sepColArr).slice(0, 4);
+
+    // Replace separately product and create HTML
+    let separatelyHTML = replaceSeparatelyData(randomArrForSepSection, templ2);
+
+    // Replace product data template and put in view
+    replaceProductData(templ1, currProduct, DOM.productHolder, separatelyHTML);
+
+    // Add events for back link from product view
+    DOM.backLink = document.querySelector('#bck-link');
+    DOM.backLink.addEventListener('click', function (e) {
+        e.preventDefault();
+        clearView(DOM.productHolder);
+        showMainView([DOM.introSection, DOM.carousel, DOM.maleFemaleSection, DOM.pickerColection]);
+        console.log(state.previousColection);
+        // Odavde nastavi, popuni main-row(DOM.productHolder) sa productima iz prethodne izabrane kolekcije
+    })
+}
 
 
 

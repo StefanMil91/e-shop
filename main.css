@@ -354,10 +354,12 @@ header form .input-group-text {
   right: 20px;
   bottom: 120px;
   background-color: #fff;
+  z-index: 999999999;
 }
 
 .back-link {
   padding: 15px 0;
+  cursor: pointer;
 }
 
 .back-link a {
@@ -374,10 +376,16 @@ header form .input-group-text {
 .des-data .form-control {
   padding: 0;
   width: 33px;
+  text-align: center;
 }
 
 .description-holder {
   padding-top: 20px;
+}
+
+.separately-title {
+  border-top: 2px solid #acdacf;
+  text-transform: uppercase;
 }
 
 @media screen and (min-width: 768px) {
