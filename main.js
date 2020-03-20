@@ -73,26 +73,34 @@ function replaceData(data, temp) {
     });
 }
 
-function makeCollection(e) {
+function makeColection(e, arg1 = -1) {
     e.preventDefault();
-    let pickedCol = this.getAttribute('data-colection');
-    state.previousColection = pickedCol;
 
-    DOM.dataColections.forEach((curr) => {
-        curr.classList.remove('active-product-link');
-    })
-    if (pickedCol === "newCol") {
-        this.classList.add('active-product-link')
-    } else if (pickedCol === "popular") {
-        this.classList.add('active-product-link')
-    } else if (pickedCol === "action") {
-        this.classList.add('active-product-link')
+    let pickedCol;
+    (this === undefined) ? pickedCol = state.previousColection: pickedCol = this.getAttribute('data-colection');
+    //console.log(pickedCol);
+    state.previousColection = pickedCol;
+    //console.log(arg1);
+    if (arg1 === -1) {
+        DOM.dataColections.forEach((curr) => {
+            curr.classList.remove('active-product-link');
+        })
+        if (pickedCol === "newCol") {
+            this.classList.add('active-product-link')
+        } else if (pickedCol === "popular") {
+            this.classList.add('active-product-link')
+        } else if (pickedCol === "action") {
+            this.classList.add('active-product-link')
+        }
     }
+
 
     function checkColection(curr) {
         return curr.colection === pickedCol || curr[pickedCol];
     }
     let newCol = state.data.filter(checkColection);
+
+    (newCol.length == 0) ? newCol = state.data: newCol;
     //console.log(newCol);
     replaceData(newCol, template());
 
@@ -116,26 +124,36 @@ function randomizeArr(arr) {
 
 }
 
-function createProductView(e) {
+function createProductView(e, arg1 = -1, arg2) {
     e.preventDefault();
-
+    let currProduct, currId, colForSeparately;
     let templ2 = template2();
     let templ1 = template1();
     // Clear view
     clearMainView([DOM.introSection, DOM.carousel, DOM.maleFemaleSection, DOM.pickerColection]); // clear other unnecessery elements
     clearView(DOM.productHolder); // clear container with products
+    if (arg1 == -1) {
+        currId = parseInt(this.getAttribute('data-id'));
+        colForSeparately = this.getAttribute('data-colection');
+        currProduct = state.data[currId];
+    } else {
+        currId = arg1;
+        currProduct = state.data[arg1];
+        colForSeparately = arg2;
+    }
 
-    let colForSeparately = this.getAttribute('data-colection');
-    let currId = parseInt(this.getAttribute('data-id'));
-    let currProduct = state.data[currId];
+    //console.log(currId);
+
+
 
     // Filtrate data for separately section
     function separatelyFilter(curr) {
         return curr.colection === colForSeparately;
     }
-    // Slice curr product
+    // Slice curr product not to appear in the offers product
     let tempStateData = [].concat(state.data);
     tempStateData.splice(currId, 1);
+
 
     // Filter picked colection and randomized arr
     let sepColArr = tempStateData.filter(separatelyFilter);
@@ -153,9 +171,25 @@ function createProductView(e) {
         e.preventDefault();
         clearView(DOM.productHolder);
         showMainView([DOM.introSection, DOM.carousel, DOM.maleFemaleSection, DOM.pickerColection]);
-        console.log(state.previousColection);
+
         // Odavde nastavi, popuni main-row(DOM.productHolder) sa productima iz prethodne izabrane kolekcije
+        makeColection(e, 0);
     })
+
+    // Add functiononality for separately product
+    DOM.dataProductColections = document.querySelectorAll('[data-colection]');
+    DOM.dataProductColections = Array.from(DOM.dataProductColections).slice(5);
+    DOM.dataProductColections.forEach(curr => {
+        curr.addEventListener('click', function (e) {
+            e.preventDefault();
+            let productID = this.getAttribute('data-id');
+            let pickedProduct = state.data[productID];
+            //console.log(pickedProduct);
+            createProductView(e, productID, pickedProduct.colection)
+        })
+    })
+    //console.log(DOM.dataProductColections);
+
 }
 
 
@@ -163,4 +197,4 @@ function createProductView(e) {
 // Event listeners and functions
 
 getData();
-DOM.dataColections.forEach(curr => curr.addEventListener('click', makeCollection));
+DOM.dataColections.forEach(curr => curr.addEventListener('click', makeColection));
